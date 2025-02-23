@@ -1,5 +1,5 @@
-import { ThemeProvider } from 'next-themes';
 import '@/app/globals.css';
+import ThemeProvider from '@/provider/ThemeProvider';
 
 export const metadata = {
   title: 'MyPly',
