@@ -14,6 +14,6 @@ export const features = [
   {
     icon: Play,
     title: '유튜브 연동',
-    description: '바로 유튜브 재생목록에 추가할 수 있어요',
+    description: '유튜브 재생목록에 추가',
   },
 ];
