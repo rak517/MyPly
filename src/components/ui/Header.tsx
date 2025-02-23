@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { Button } from './button';
 import Logo from './Logo';
+import ThemeToggle from '../ThemeToggle';
 
 export default function Header() {
   const router = useRouter();
@@ -13,6 +14,7 @@ export default function Header() {
         <div className="flex h-16 items-center justify-between">
           <Logo />
           <div className="flex items-center gap-4">
+            <ThemeToggle />
             <Button
               variant="ghost"
               onClick={() => '/login'}
@@ -21,7 +23,7 @@ export default function Header() {
               로그인
             </Button>
             <Button
-              onClick={() => router.push('/signup')}
+              onClick={() => router.push('/login')}
               className="bg-gradient-to-r from-[#E91E63] to-[#F06292] hover:opacity-90"
             >
               시작하기
