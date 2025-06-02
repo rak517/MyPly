@@ -1,0 +1,57 @@
+name: "📝 이슈"
+description: "새로운 이슈를 생성합니다"
+body:
+  - type: dropdown
+    attributes:
+      label: 🏷️ 이슈 타입
+      description: 이슈의 타입을 선택해 주세요.
+      options:
+        - "✨ Feature (새로운 기능)"
+        - "🐛 Bug (버그 수정)"
+        - "♻️ Refactor (코드 리팩토링)"
+        - "📝 Docs (문서 수정)"
+        - "💄 Style (코드 스타일 변경)"
+        - "⚡ Performance (성능 개선)"
+        - "✅ Test (테스트 관련)"
+        - "🔧 Chore (기타 작업)"
+    validations:
+      required: true
+  
+  - type: input
+    attributes:
+      label: 📋 제목
+      description: 이슈의 간단한 제목을 작성해 주세요.
+      placeholder: "예: 로그인 기능 추가"
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: ❓ 설명
+      description: 이슈에 대한 자세한 설명을 작성해 주세요.
+      placeholder: |
+        - Feature인 경우: 어떤 기능을 추가할지 설명
+        - Bug인 경우: 어떤 문제가 발생하는지 설명
+        - Refactor인 경우: 왜 리팩토링이 필요한지 설명
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: ✅ 작업할 내용
+      description: 할 일을 체크박스 형태로 작성해주세요.
+      placeholder: |
+        - [ ] 작업 1
+        - [ ] 작업 2
+        - [ ] 작업 3
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: 📄 참고 자료
+      description: 참고 자료가 있다면 작성해 주세요.
+      placeholder: |
+        - 관련 링크
+        - 스크린샷
+        - 에러 로그 등
