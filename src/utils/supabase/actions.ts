@@ -39,3 +39,25 @@ export async function signup(formData: FormData) {
   revalidatePath('/', 'layout');
   redirect('/');
 }
+
+export async function signInWithGoogle() {
+  const supabase = await createClient();
+
+  const auth_callback_url = `${process.env.NEXT_PUBLIC_SITE_URL}/oauth/callback`;
+
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: auth_callback_url,
+    },
+  });
+
+  console.log(data);
+
+  if (error || !data?.url) {
+    console.error(error);
+    redirect('/error');
+  }
+
+  redirect(data.url as string);
+}
