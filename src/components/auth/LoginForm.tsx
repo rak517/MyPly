@@ -12,8 +12,13 @@ import { Button } from '../ui/button';
 import { Separator } from '../ui/separator';
 import SocialButton from './SocialButton';
 import Link from 'next/link';
+import { useState, useTransition } from 'react';
+import { login } from '@/utils/supabase/actions';
+import { useRouter } from 'next/navigation';
 
 export default function LoginForm() {
+  const router = useRouter();
+
   const form = useForm<LoginFormType>({
     resolver: zodResolver(loginSchema),
     mode: 'onBlur',
@@ -23,8 +28,27 @@ export default function LoginForm() {
     },
   });
 
+  const [error, setError] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
+
   const onSubmit = (data: LoginFormType) => {
-    console.log(data);
+    setError(null);
+    const formData = new FormData();
+    formData.append('email', data.email);
+    formData.append('password', data.password);
+
+    startTransition(async () => {
+      try {
+        await login(formData);
+        router.push('/');
+      } catch (e: unknown) {
+        if (e instanceof Error) {
+          setError(e.message);
+        } else {
+          setError('로그인 중 알 수 없는 오류가 발생했습니다.');
+        }
+      }
+    });
   };
 
   return (
@@ -55,15 +79,16 @@ export default function LoginForm() {
                   <FormItem>
                     <FormLabel>비밀번호</FormLabel>
                     <FormControl>
-                      <Input placeholder='비밀번호를 입력하세요' {...field} />
+                      <Input type='password' placeholder='비밀번호를 입력하세요' {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
-              <Button type='submit' className='h-10 w-full'>
-                로그인
+              {error && <div className='text-sm text-red-500'>{error}</div>}
+              <Button type='submit' className='h-10 w-full' disabled={isPending}>
+                {isPending ? '로그인 중...' : '로그인'}
               </Button>
             </form>
           </Form>

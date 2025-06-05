@@ -12,8 +12,13 @@ import Logo from '../ui/Logo';
 import SocialButton from './SocialButton';
 import { Separator } from '../ui/separator';
 import Link from 'next/link';
+import { useState, useTransition } from 'react';
+import { signupWithEmailPassword } from '@/utils/supabase/actions';
+import { useRouter } from 'next/navigation';
 
 export default function SignupForm() {
+  const router = useRouter();
+
   const form = useForm<SignupFormType>({
     resolver: zodResolver(signupSchema),
     mode: 'onBlur',
@@ -25,8 +30,28 @@ export default function SignupForm() {
     },
   });
 
+  const [error, setError] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
+
   const onSubmit = (data: SignupFormType) => {
-    console.log(data);
+    setError(null);
+    const formData = new FormData();
+    formData.append('email', data.email);
+    formData.append('nickname', data.nickname);
+    formData.append('password', data.password);
+
+    startTransition(async () => {
+      try {
+        await signupWithEmailPassword(formData);
+        router.push('/');
+      } catch (e: unknown) {
+        if (e instanceof Error) {
+          setError(e.message);
+        } else {
+          setError('회원가입 중 알 수 없는 오류가 발생했습니다.');
+        }
+      }
+    });
   };
 
   return (
@@ -92,8 +117,9 @@ export default function SignupForm() {
                 )}
               />
 
-              <Button type='submit' className='h-10 w-full'>
-                회원가입
+              {error && <div className='text-sm text-red-500'>{error}</div>}
+              <Button type='submit' className='h-10 w-full' disabled={isPending}>
+                {isPending ? '가입 중...' : '회원가입'}
               </Button>
             </form>
           </Form>

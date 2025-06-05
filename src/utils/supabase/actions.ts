@@ -19,25 +19,26 @@ export async function login(formData: FormData) {
   }
 
   revalidatePath('/', 'layout');
-  redirect('/');
 }
 
-export async function signup(formData: FormData) {
+export async function signupWithEmailPassword(formData: FormData) {
   const supabase = await createClient();
 
-  const data = {
+  const { error } = await supabase.auth.signUp({
     email: formData.get('email') as string,
     password: formData.get('password') as string,
-  };
-
-  const { error } = await supabase.auth.signUp(data);
+    options: {
+      data: {
+        nickname: formData.get('nickname') as string,
+      },
+    },
+  });
 
   if (error) {
-    redirect('/error');
+    throw new Error(error.message);
   }
 
   revalidatePath('/', 'layout');
-  redirect('/');
 }
 
 export async function signInWithGoogle() {
@@ -52,10 +53,7 @@ export async function signInWithGoogle() {
     },
   });
 
-  console.log(data);
-
   if (error || !data?.url) {
-    console.error(error);
     redirect('/error');
   }
 
