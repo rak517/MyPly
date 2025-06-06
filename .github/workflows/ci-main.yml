@@ -24,6 +24,12 @@ jobs:
 
       - name: Run Lint
         run: npm run lint
+
+      - name: Create to .env file
+        run: |
+         echo "NEXT_PUBLIC_SUPABASE_URL=${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}" >> .env
+         echo "NEXT_PUBLIC_SUPABASE_ANON_KEY=${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}" >> .env
+         echo "NEXT_PUBLIC_SITE_URL=${{ secrets.NEXT_PUBLIC_SITE_URL }}" >> .env
       
       - name: Build Next.js app
         run: npm run build
