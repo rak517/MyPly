@@ -3,6 +3,14 @@ import { updateSession } from '@/utils/supabase/middleware';
 import { AFTER_LOGIN_ROUTE, BEFORE_LOGIN_ROUTE } from './constants/route';
 import { createClient } from '@/utils/supabase/server';
 
+/**
+ * Middleware that enforces authentication-based routing for incoming requests.
+ *
+ * Redirects authenticated users away from routes intended only for unauthenticated users, and redirects unauthenticated users away from routes intended only for authenticated users. If no redirect is needed, proceeds with the updated session response.
+ *
+ * @param request - The incoming Next.js request.
+ * @returns A response that may be a redirect or the original response from session update.
+ */
 export async function middleware(request: NextRequest) {
   const res = await updateSession(request);
 

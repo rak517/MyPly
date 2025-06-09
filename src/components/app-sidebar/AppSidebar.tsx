@@ -6,6 +6,11 @@ import Logo from '../ui/Logo';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '../ui/sidebar';
 import { navItems } from '@/constants/navigation';
 
+/**
+ * Renders the main application sidebar with navigation links, logo, and footer.
+ *
+ * The sidebar highlights the active navigation item based on the current URL path.
+ */
 export default function AppSidebar() {
   const pathname = usePathname();
 
