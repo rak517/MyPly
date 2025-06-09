@@ -9,13 +9,15 @@ export default async function Layout({ children }: PropsWithChildren) {
 
   return (
     <SidebarProvider defaultOpen={defaultOpen}>
-      <div className='flex h-screen'>
-        <div className='fixed top-0'>
+      <div className='flex min-h-screen'>
+        <aside className='sticky top-0 h-screen'>
           <AppSidebar />
-        </div>
+        </aside>
 
-        <main className='overflow-y-auth flex-1'>
-          <SidebarTrigger />
+        <main className='flex-1 overflow-y-auto p-6 transition-[padding] duration-200 ease-linear group-data-[state=collapsed]/sidebar-wrapper:pl-[var(--sidebar-width-icon)]'>
+          <div className='mb-4 md:hidden'>
+            <SidebarTrigger />
+          </div>
           {children}
         </main>
       </div>
