@@ -1,8 +1,29 @@
-import { type NextRequest } from 'next/server';
+import { NextResponse, type NextRequest } from 'next/server';
 import { updateSession } from '@/utils/supabase/middleware';
+import { AFTER_LOGIN_ROUTE, BEFORE_LOGIN_ROUTE } from './constants/route';
+import { createClient } from '@/utils/supabase/server';
 
 export async function middleware(request: NextRequest) {
-  return await updateSession(request);
+  const res = await updateSession(request);
+
+  const supabase = await createClient();
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  const pathName = request.nextUrl.pathname;
+  const isBeforeLoginRoute = BEFORE_LOGIN_ROUTE.includes(pathName);
+  const isAfterLoginRoute = AFTER_LOGIN_ROUTE.some((route) => pathName.startsWith(route));
+
+  if (isBeforeLoginRoute && session) {
+    return NextResponse.redirect(new URL('/dashboard', request.url));
+  }
+
+  if (isAfterLoginRoute && !session) {
+    return NextResponse.redirect(new URL('/login', request.url));
+  }
+
+  return res;
 }
 
 export const config = {
