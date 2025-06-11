@@ -6,7 +6,7 @@ import { DashboardBottomSection } from '@/components/dashboard/DashboardBottomSe
 
 export default function Page() {
   return (
-    <div className='space-y-8'>
+    <div className='space-y-8 p-4'>
       <DashboardHeader />
       <WelcomeSection />
       <QuickActions />
