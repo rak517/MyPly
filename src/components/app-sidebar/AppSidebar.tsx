@@ -10,7 +10,7 @@ export default function AppSidebar() {
   const pathname = usePathname();
 
   return (
-    <Sidebar className='hidden md:flex'>
+    <Sidebar className='hidden md:flex' collapsible='none'>
       <SidebarHeader className='p-5'>
         <Logo />
       </SidebarHeader>
