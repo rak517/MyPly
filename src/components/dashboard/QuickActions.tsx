@@ -4,12 +4,12 @@ import { Card, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
 import { quickActions } from '@/constants/quick-actions';
 
-export function QuickActions() {
+export function QuickActions({ gridClassName = 'grid grid-cols-2 gap-4 md:grid-cols-4' }: { gridClassName?: string }) {
   return (
     <div className='space-y-4'>
       <h2 className='text-xl font-bold'>빠른 플레이리스트 생성</h2>
 
-      <div className='grid grid-cols-2 gap-4 md:grid-cols-4'>
+      <div className={gridClassName}>
         {quickActions.map((action) => (
           <div key={action.title}>
             <Link href={action.href}>
